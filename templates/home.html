@@ -6,23 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Tracking App</title>
 </head>
-{% extends "base.html" %} {% block main %}
-
 <body>
-    <h1>Project Tracking App</h1>
-    
+    <h1>Project Hub</h1>
+<br>
     <div class="form-container">
         <h3>Add Team</h3>
         <form action="{{ url_for('add_team') }}" method="POST">
             {{ team_form.csrf_token() }}
-            {{ team_form.team_name.label }}
-            {{ team_form.team_name }}
+            {{ team_form.teamname.label }}
+            {{ team_form.teamname }}
             {{ team_form.submit.label }}
-            {{ team_form.submit,  class="btn btn-primary")}}
+            {{ team_form.submit }}
         </form>
     </div>
 <br>
-
     <div class="form-container">
         <h3>Add Project</h3>
         <form action="{{ url_for('add_project') }}" method="POST">
@@ -36,11 +33,9 @@
             {{ project_form.team_selection.label }}
             {{ project_form.team_selection }}
             {{ project_form.submit.label }}
-            {{ project_form.submit, class="btn btn-primary") }}
-
+            {{ project_form.submit }}
         </form>
-        {% endblock %}
-
     </div>
 </body>
 </html>
+   

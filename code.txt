@@ -1,0 +1,106 @@
+ FROM SERVER ----
+ 
+ 
+      new_team = Team(team_name, user_id)
+    #     with app.app_context():
+    #         db.session.add(new_team)
+    #         db.session.commit()
+    
+    #     return render_template('add_team.html', team_form=team_form)
+    # else:
+    #     return redirect(url_for("home"))
+
+
+
+@app.route('/all-teams')
+def list_team():
+
+    teams = Team.query.all()
+    return render_template('all_teams.html')
+
+
+
+@app.route("/add-project", methods=["POST"])
+def add_project():
+    project_form = ProjectForm()
+    project_form.update_teams(User.query.get(user_id).teams)
+
+    if project_form.validate_on_submit():
+        project_name = project_form.project_name.data
+        description = project_form.description.data
+        completed = project_form.completed.data
+        team_id = project_form.team_selection.data
+
+        new_project = Project(project_name, completed, team_id, description = description)
+        db.session.add(new_project)
+        db.session.commit()
+        return redirect(url_for("home"))
+    else:
+        return redirect(url_for("home"))
+
+
+@app.route('/all_projects')
+def list_project():
+
+    projects = Project.query.all()
+    return render_template('all_projects.html', projects=projects)
+
+
+@app.route("/delete", methods=["GET","POST"])
+def del_project():
+
+    form = DelForm()
+
+    if form.validate_on_submit():
+
+        id = form.id.data
+        project = Project.query.get(id)
+        with app.app_context():
+            db.session.delete(project)
+            db.session.commit()
+
+            return redirect(url_for('list_project'))
+    return render_template('delete_project.html', form=form)
+
+# ====================================================================
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+   """Log user into site."""
+   form = LoginForm(request.form)
+
+   if form.validate_on_submit():
+      username = form.username.data
+      password = form.password.data
+
+      user = user.get_by_username(username)
+
+      if not user or user['password'] != password:
+            flash("Invalid username or password")
+            return redirect('/login')
+
+      session["username"] = user['username']
+      flash("Logged in.")
+      return redirect("/")
+
+   return render_template("login.html", form=form)
+
+
+@app.route("/logout")
+def logout():
+
+   del session["username"]
+   flash("Logged out.")
+   return redirect("/login")
+
+
+
+
+   #==========
+
+   Forms.py 
+
+   from flask_wtf import FlaskForm
+from wtforms import StringField, IntegerField, SubmitField, TextAreaField, BooleanField, SelectField
+from wtforms.validators import DataRequired, Length
