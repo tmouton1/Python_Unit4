@@ -1,13 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
 {% extends "base.html" %}
 {% block content %}
-<div class="projecthub">
-    <h1>Check out our amazing community of creators!</h1>
-    <p>Here is a list of the projects in our database!</p>
+
+<body>
     
+<div class="projecthub">
+    <h1>Check out our amazing projects!</h1>
 
-    <a class="list" href="{{url_for('list_projects')}}">Our Projects</a>
-   
+    <ul>
+        {% for project in projects %}
 
+        <li>{{project}}</li>
+
+        {% endfor %}
+
+        
+
+
+    </ul>
 </div>
 
 {% endblock %}
+
+
+</body>
+
+
+</html>
+

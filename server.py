@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect, session, flash, request
+from flask import Flask, render_template, url_for, redirect
 from model import db, connect_to_db, User, Team, Project
 from forms import TeamForm, ProjectForm, DelForm
 import jinja2
@@ -11,11 +11,9 @@ app.jinja_env.undefined = jinja2.StrictUndefined
 user_id = 1 
 
 
-
 @app.route("/")
 def home():
     team_form = TeamForm()
-
     project_form = ProjectForm()
     project_form.update_teams(User.query.get(user_id).teams)
     return render_template("home.html", team_form = team_form, project_form = project_form)
@@ -34,16 +32,15 @@ def add_team():
             db.session.commit()
         print(team_form.teamname.data)
 
-        return redirect(url_for('list_team'))
+        return redirect(url_for('home'))
     else:
-        return redirect(url_for('add-team.html',team_form=team_form))
+        return redirect(url_for('home'))
 
 # =========================================================
 
 @app.route('/teams')
 def list_team():
 
-    team4 = Team(id=4,teamname='jag',user_id=4)
 
     teams=Team.query.all()
     # with app.app_context():
@@ -86,22 +83,22 @@ def add_project():
 
 # ==================================
 
-# @app.route('/teams')
-# def list_teams():
+@app.route('/teams')
+def list_teams():
 
-#     with app.app_context():
-#         db.session.query(teams)
-#         db.session.commit()
-#     return render_template('teams.html',teams=teams)
+    teams = Team.query.all()
+    with app.app_context():
+        db.session.query(teams)
+        db.commit()
+        
+    return render_template('teams.html',teams=teams)
 # =================================
 
 @app.route('/projects')
 def list_projects():
 
     projects = Project.query.all()
-    with app.app_context():
-        db.session.query(projects)
-        db.session.commit()
+    print(projects)
 
     return render_template('projects.html',projects=projects)
 
