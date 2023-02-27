@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, redirect, session, flash, request
 from model import db, connect_to_db, User, Team, Project
-from forms import TeamForm, ProjectForm
+from forms import TeamForm, ProjectForm, DelForm
 import jinja2
 
 app = Flask(__name__)
@@ -8,12 +8,14 @@ app.secret_key = "mysecretkey"
 
 app.jinja_env.undefined = jinja2.StrictUndefined  
 
+user_id = 1 
 
-user_id = 1
+
 
 @app.route("/")
 def home():
     team_form = TeamForm()
+
     project_form = ProjectForm()
     project_form.update_teams(User.query.get(user_id).teams)
     return render_template("home.html", team_form = team_form, project_form = project_form)
@@ -25,15 +27,42 @@ def add_team():
 
     if team_form.validate_on_submit():
         teamname = team_form.teamname.data
-        new_team = Team(teamname, user_id)
+        new_team = Team(teamname=teamname,user_id=user_id,id=id)
+
         with app.app_context():
             db.session.add(new_team)
             db.session.commit()
         print(team_form.teamname.data)
-        return redirect(url_for("home"))
+
+        return redirect(url_for('list_team'))
     else:
-        return redirect(url_for("home"))
-    
+        return redirect(url_for('add-team.html',team_form=team_form))
+
+# =========================================================
+
+@app.route('/teams')
+def list_team():
+
+    team4 = Team(id=4,teamname='jag',user_id=4)
+
+    teams=Team.query.all()
+    # with app.app_context():
+    #     db.session.query()
+    #     db.session.commit()
+    print(teams)
+
+    return render_template('teams.html', teams=teams)
+
+
+    # teams = Team.query.all()
+
+    # with app.app_context():
+    #         db.create_all(teams)
+    #         db.session.commit()
+    #     print(team_form.teamname.data)
+
+
+# ======================================================
 
 @app.route("/add-project", methods=["POST"])
 def add_project():
@@ -46,7 +75,7 @@ def add_project():
         completed = project_form.completed.data
         team_id = project_form.team_selection.data
 
-        new_project = Project(project_name, completed, team_id, description = description)
+        new_project = Project(project_name, completed, team_id, description)
         with app.app_context():
             db.session.add(new_project)
             db.session.commit()
@@ -55,7 +84,46 @@ def add_project():
     else:
         return redirect(url_for("home"))
 
+# ==================================
+
+# @app.route('/teams')
+# def list_teams():
+
+#     with app.app_context():
+#         db.session.query(teams)
+#         db.session.commit()
+#     return render_template('teams.html',teams=teams)
 # =================================
+
+@app.route('/projects')
+def list_projects():
+
+    projects = Project.query.all()
+    with app.app_context():
+        db.session.query(projects)
+        db.session.commit()
+
+    return render_template('projects.html',projects=projects)
+
+# =======================================
+
+@app.route('/delete', methods=['GET', 'POST'])
+def del_project():
+    form = DelForm()
+
+    if form.validate_on_submit():
+
+        id = form.id.data
+        project = Project.query.get(id)
+        with app.app_context():
+            db.session.delete(project)
+            db.session.commit()
+
+            return redirect(url_for('projects'))
+        return render_template('delete-project.html',form=form)
+
+# ===================================
+
 if __name__ == "__main__":
     connect_to_db(app)
     app.env = "development"

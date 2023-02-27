@@ -104,3 +104,19 @@ def logout():
    from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, SubmitField, TextAreaField, BooleanField, SelectField
 from wtforms.validators import DataRequired, Length
+
+
+
+
+<a class="nav-item nav-link" href="{{url_for('')}}">Remove Your project</a>
+
+
+team1 = Team('Jags')
+team2 = Team('benjo')
+team3 = Team('kofi')
+team4 = Team('plantlovers')
+team5 = Team('Wellbeans2')
+team6 = Team('Hotsteppas')
+team7 = Team('TeamFlask')
+
+    jags = Team.query.filter_by(teamname='jags',user_id =1).first()

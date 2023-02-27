@@ -1,5 +1,5 @@
 import os
-from  flask_sqlalchemy import SQLAlchemy 
+from flask_sqlalchemy import SQLAlchemy 
 
 db = SQLAlchemy()
 
@@ -12,7 +12,7 @@ class User(db.Model):
 
     teams = db.relationship("Team", backref ="user", lazy = True)
 
-def __init__(self, username, password):
+    def __init__(self, username, password):
         self.username = username
         self.password = password
 
@@ -23,6 +23,11 @@ class Team(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     teamname = db.Column(db.String(255), nullable = False, unique = False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable = False)
+    projects = db.relationship('Project',backref='team',lazy='dynamic')
+
+    def __init__(self, id, teamname, user_id):
+        self.teamname = teamname
+        self.user_id = user_id
 
 class Project(db.Model):
     __tablename__ = "projects"
@@ -32,6 +37,12 @@ class Project(db.Model):
     description = db.Column(db.String(255), nullable = False, unique = True)
     completed = (db.Column(db.Boolean, default = False))
     team_id = db.Column(db.Integer, db.ForeignKey("teams.id"), nullable = False)
+
+    def __init__(self, projectname, description,completed,team_id):
+        self.projectname = projectname
+        self.description = description
+        self.completed = completed
+        self.team_id = team_id
 
 def connect_to_db(app):
 
