@@ -7,7 +7,7 @@ class TeamForm(FlaskForm):
     submit = SubmitField("submit")
 
 class ProjectForm(FlaskForm):
-    project_name = StringField('project name', validators=[DataRequired(), Length(min=4, max=255)])
+    projectname = StringField('project name', validators=[DataRequired(), Length(min=4, max=255)])
     description = TextAreaField('description')
     completed = BooleanField("completed?")
     team_selection = SelectField("team")
@@ -22,7 +22,4 @@ class DelForm(FlaskForm):
     submit = SubmitField("Remove Project")
 
 
-# class UserForm(FlaskForm):
-#     user_name = StringField('user name', validators=[DataRequired(), Length(min=4, max=255)])
-#     password = TextAreaField('password')
-#     submit = SubmitField("submit")
+

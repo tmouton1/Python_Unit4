@@ -43,36 +43,27 @@ def list_team():
 
 
     teams=Team.query.all()
-    # with app.app_context():
-    #     db.session.query()
-    #     db.session.commit()
     print(teams)
 
     return render_template('teams.html', teams=teams)
 
-
-    # teams = Team.query.all()
-
-    # with app.app_context():
-    #         db.create_all(teams)
-    #         db.session.commit()
-    #     print(team_form.teamname.data)
 
 
 # ======================================================
 
 @app.route("/add-project", methods=["POST"])
 def add_project():
+
     project_form = ProjectForm()
     project_form.update_teams(User.query.get(user_id).teams)
 
     if project_form.validate_on_submit():
-        project_name = project_form.project_name.data
+        projectname = project_form.projectname.data
         description = project_form.description.data
         completed = project_form.completed.data
         team_id = project_form.team_selection.data
 
-        new_project = Project(project_name, completed, team_id, description)
+        new_project = Project(projectname=projectname, completed=completed, team_id=team_id, description=description)
         with app.app_context():
             db.session.add(new_project)
             db.session.commit()

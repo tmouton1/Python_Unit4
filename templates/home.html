@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/site.css"/>
+
     <title>Project Tracking App</title>
 </head>
 <body>
@@ -17,7 +19,7 @@
         <a class="nav-item nav-link" href="{{url_for('home')}}">Home</a>
         <a class="nav-item nav-link" href="{{url_for('list_team')}}">Our Teams</a>
         <a class="nav-item nav-link" href="{{url_for('list_projects')}}">Our Projects</a>
-        <a class="nav-item nav-link" href="{{url_for('del_project')}}">Remove Your project</a>
+    
     </div>
 </nav>
 {% block content %}
@@ -30,7 +32,6 @@
             {{ team_form.csrf_token() }}
             {{ team_form.teamname.label }}
             {{ team_form.teamname }}
-            {{ team_form.submit.label }}
             {{ team_form.submit }}
         </form>
     </div>
@@ -39,18 +40,19 @@
         <h3>Add Project</h3>
         <form action="{{ url_for('add_project') }}" method="POST">
             {{ project_form.csrf_token() }}
-            {{ project_form.project_name.label }}
-            {{ project_form.project_name }}
+            {{ project_form.projectname.label }}
+            {{ project_form.projectname }}
             {{ project_form.description.label }}
             {{ project_form.description }}
             {{ project_form.completed.label }}
             {{ project_form.completed }}
             {{ project_form.team_selection.label }}
             {{ project_form.team_selection }}
-            {{ project_form.submit.label }}
             {{ project_form.submit }}
         </form>
     </div>
+
+
 </div>
 </body>
 </html>

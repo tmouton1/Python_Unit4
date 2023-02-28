@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/site.css"/>
     <title>Document</title>
 
 </head>
@@ -13,13 +14,46 @@
 <body>
     
 <div class="projecthub">
-    <h1>Check out our amazing projects!</h1>
+
+  <h2>Check Our Amazing Project List</h2>
+  <p>(Please note, project status True = complete, and False = in progress).</p>
 
     <ul>
         {% for project in projects %}
+        <style>
+          table, th {
+            border:1px solid black;
+            background-color: black;
+            opacity: 70%;
+            
+          }
+          td{
+            color: white;
+            opacity: 200%;
+            font-weight: bolder;
+          }
+          
+          </style>
+          <body>
+          
 
-        <li>{{project}}</li>
+            <h3>-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</h3>
 
+          <table style="width:100%">
+            <tr>
+              <td>Project Title</td>
+              <td>Project Description</td>
+              <td>Project Status</td>
+            </tr>
+            <tr>
+              <td>{{project.projectname}}</td>
+              <td>{{project.description}}</td>
+              <td>{{project.completed}}</td>
+            </tr>
+          </table>
+
+    
+          
         {% endfor %}
 
         

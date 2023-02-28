@@ -120,3 +120,16 @@ team6 = Team('Hotsteppas')
 team7 = Team('TeamFlask')
 
     jags = Team.query.filter_by(teamname='jags',user_id =1).first()
+
+
+project.html
+<table>
+            <tr>
+              <th>Project Title</th>
+              <br>            
+              <br>
+
+
+              <th>Project Description</th>
+              <th>Project Status</th>
+            </tr>
